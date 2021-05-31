@@ -26,7 +26,7 @@ router.get("/:id", async (req, res) => {
       include: [{ model: Category }, { model: Tag }],
     });
     if (!productData) {
-      res.status(404).json({ message: "No Product found with this ID" });
+      res.status(404).json({ message: "No Product found with that ID" });
     }
     res.status(200).json(productData);
   } catch (err) {
@@ -113,7 +113,10 @@ router.delete("/:id", async (req, res) => {
     const deleteProduct = await Product.destroy({
       where: { id: req.params.id },
     });
-    res.status(200).res(deleteProduct);
+    if (!categoryData) {
+      res(404).json({ message: "No Product found with that ID" });
+    }
+    res.status(200).json(deleteProduct);
   } catch (err) {
     res.status(500).json(err);
   }
